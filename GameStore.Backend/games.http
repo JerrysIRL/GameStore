@@ -1,0 +1,31 @@
+﻿GET http://localhost:5179/games
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlNlcmdlaSIsInN1YiI6IlNlcmdlaSIsImp0aSI6ImQ2MjgyMzRjIiwicm9sZSI6ImFkbWluIiwiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NjI2NCIsImh0dHBzOi8vbG9jYWxob3N0OjQ0MzAzIiwiaHR0cDovL2xvY2FsaG9zdDo1MTc5IiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NzEyNSJdLCJuYmYiOjE3MjUyNjA5NDIsImV4cCI6MTczMzEyMzM0MiwiaWF0IjoxNzI1MjYwOTQzLCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.FsB3qubhhIHbvKsUvzspJ7cIElIc5hQrgDPbEwM3Oi8
+###
+GET http://localhost:5179/games/4
+
+###
+POST http://localhost:5179/games
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlNlcmdlaSIsInN1YiI6IlNlcmdlaSIsImp0aSI6IjFhOTBlMzgxIiwiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NjI2NCIsImh0dHBzOi8vbG9jYWxob3N0OjQ0MzAzIiwiaHR0cDovL2xvY2FsaG9zdDo1MTc5IiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NzEyNSJdLCJuYmYiOjE3MjUyNTk2NTQsImV4cCI6MTczMzEyMjA1NCwiaWF0IjoxNzI1MjU5NjU1LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.6WnEr3_-4Bdc7Js1l82qm2UJEtY_zN3Q1piGnm9riKg
+Content-Type: application/json
+
+{
+  "name": "Ghost of Tsushima",
+  "genreId": 3,
+  "price": 19.99,
+  "releaseDate": "2011-11-18"
+}
+
+###
+PUT http://localhost:5179/games/2
+Content-Type: application/json
+
+{
+  "name": "Ghost of Tsushima",
+  "genreId": 3,
+  "price": 19.99,
+  "releaseDate": "2011-11-18"
+}
+
+###
+DELETE http://localhost:5179/games/4
+
