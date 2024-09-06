@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddAuthentication().AddJwtBearer();
-builder.Services.AddAuthorization();
+/* builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthorization(); */
 
 var connectionString = builder.Configuration.GetConnectionString("GameStore");
 

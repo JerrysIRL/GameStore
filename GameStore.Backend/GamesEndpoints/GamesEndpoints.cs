@@ -70,10 +70,10 @@ public static class GamesEndpoints
             return Results.Ok();
         });
 
-        group.RequireAuthorization(policy =>
+       /*  group.RequireAuthorization(policy =>
         {
             policy.RequireRole("admin");
-        });
+        }); */
 
         return group;
     }
