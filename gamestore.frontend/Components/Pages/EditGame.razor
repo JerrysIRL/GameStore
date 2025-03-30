@@ -1,6 +1,6 @@
 ﻿@page "/editgame"
 @page "/editgame/{id:int}"
-@rendermode InteractiveServer
+
 
 @inject NavigationManager NavigationManager;
 @inject GamesClient GamesClient;
@@ -55,13 +55,12 @@ else
 }
 
 @code {
+    [SupplyParameterFromForm] private GameDetails? Game { get; set; }
     [Parameter] public int? Id { get; set; }
 
     private Genre[]? _genres;
-
     private string title = string.Empty;
 
-    [SupplyParameterFromForm] private GameDetails? Game { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
