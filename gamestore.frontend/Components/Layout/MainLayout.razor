@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 <div class="d-flex flex-column min-vh-100">
     <NavMenu/>
-    <div class="container">
-        @Body
-    </div>
-    <Footer/>
+    <main style="overflow-y: auto; height:100%">
+        <article class="content px-4 container" style="min-height: 83vh">
+            @Body
+        </article>
+    </main>
+    <Footer></Footer>
 </div>

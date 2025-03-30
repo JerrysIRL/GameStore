@@ -1,8 +1,11 @@
 ﻿@page "/Login"
+@using GameStore.Frontend.User
+@using Microsoft.AspNetCore.Identity
 
-@rendermode InteractiveAuto
 @inject NavigationManager NavigationManager
+@inject SignInManager<GameStoreUser> SignInManager
 @inject ILogger<Login> Logger
+
 
 <PageTitle>Login</PageTitle>
 
@@ -15,7 +18,7 @@
 }
 else
 {
-    <section class="vh-100">
+    <section>
         <div class="container-fluid h-custom">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-md-9 col-lg-6 col-xl-5">
@@ -24,12 +27,12 @@ else
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-5">
                     <h3 style="color: #e50000">@_warningText</h3>
-                    <EditForm Model="@UserDetails" FormName="login" OnValidSubmit="HandleLoginAsync" Enhance>
+                    <EditForm Model="@UserDetails" FormName="login" method="post" OnValidSubmit="HandleLoginAsync">
                         <DataAnnotationsValidator/>
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <InputText
-                                @bind-Value="@UserDetails.Email"
+                                @bind-Value="UserDetails.Email"
                                 id="form3Example3"
                                 class="form-control form-control-lg"
                                 placeholder="Enter a valid email address">
@@ -41,7 +44,7 @@ else
                         <!-- Password input -->
                         <div data-mdb-input-init class="form-outline mb-3">
                             <InputText
-                                @bind-Value="@UserDetails.Password"
+                                @bind-Value="UserDetails.Password"
                                 type="password"
                                 id="form3Example4"
                                 class="form-control form-control-lg"
@@ -86,23 +89,23 @@ else
 
 @code {
 
-    [SupplyParameterFromForm] private UserDetails? UserDetails { get; set; }
+    [SupplyParameterFromForm] UserDetails UserDetails { get; set; } = new();
     string _warningText = "";
-
-    protected override void OnParametersSet()
-    {
-        UserDetails = new UserDetails()
-        {
-            Email = "",
-            Password = ""
-        };
-    }
 
     private async Task HandleLoginAsync()
     {
-        ArgumentNullException.ThrowIfNull(UserDetails);
-
-        // TODO - Implement login logic
+        var result = await SignInManager.PasswordSignInAsync(UserDetails.Email, UserDetails.Password, isPersistent: false, lockoutOnFailure: false);
+        Logger.LogInformation(result.IsNotAllowed.ToString());
+        if (result.Succeeded)
+        {
+            Logger.LogInformation($"{UserDetails.Email} logged in successfully.");
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            _warningText = "Invalid email or password.";
+            Logger.LogWarning($"{UserDetails.Email} failed to log in.");
+        }
     }
 
 }

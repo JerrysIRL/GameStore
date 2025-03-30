@@ -1,7 +1,11 @@
 ﻿@page "/register"
+@using GameStore.Frontend.User
+@using Microsoft.AspNetCore.Identity
 
-@rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject UserManager<GameStoreUser> UserManager;
+@inject SignInManager<GameStoreUser> SignInManager;
+@inject ILogger<SignUp> logger;
 
 <PageTitle>SignUp</PageTitle>
 
@@ -13,9 +17,9 @@
 }
 else
 {
-    <section class="vh-100">
-        <div class="container-fluid h-custom">
-            <div class="row d-flex justify-content-center align-items-center h-100">
+    <section class="d-flex align-items-center justify-content-center vh-100">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-center align-items-center">
                 <div class="col-md-9 col-lg-6 col-xl-5">
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
                          class="img-fluid" alt="Sample image">
@@ -96,7 +100,35 @@ else
 
     private async Task HandleRegisterAsync()
     {
-       // TODO: Implement Register logic
+        var user = new GameStoreUser
+        {
+            Email = RegisterDetails.Email,
+            UserName = RegisterDetails.Email,
+        };
+
+        var result = await UserManager.CreateAsync(user, RegisterDetails.Password);
+
+        if (!result.Succeeded)
+        {
+            string errors = string.Join(";", result.Errors.Select(e => e.Description));
+            logger.LogCritical(errors);
+            return;
+        }
+
+        var roleResult = await UserManager.AddToRoleAsync(user, "User");
+
+        if (!roleResult.Succeeded)
+        {
+            string errors = string.Join(";", roleResult.Errors.Select(e => e.Description));
+            logger.LogCritical(errors);
+        }
+
+        logger.LogInformation($"User {user.UserName} has been created");
+
+        await SignInManager.SignInAsync(user, isPersistent:false);
+
+        NavigationManager.NavigateTo("/");
+
     }
 
 }

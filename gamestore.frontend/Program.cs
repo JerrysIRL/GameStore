@@ -22,14 +22,23 @@ builder.Services.AddHttpClient<GenreClient>(client => client.BaseAddress = new U
 
 var dbStringBuilder = new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("GameStoreIdentity"));
 dbStringBuilder.Username = builder.Configuration["DbUser"];
-dbStringBuilder.Password = builder.Configuration["DBPASSWORD"];
+dbStringBuilder.Password = builder.Configuration["DbPassword"];
 string connectionString = dbStringBuilder.ConnectionString;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseNpgsql(connectionString));
 
-builder.Services.AddIdentity<GameStoreUser, GameStoreRole>()
-	.AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<GameStoreUser, GameStoreRole>(options =>
+	{
+		options.SignIn.RequireConfirmedAccount = false;
+		options.SignIn.RequireConfirmedEmail = false;
+		options.SignIn.RequireConfirmedPhoneNumber = false;
+		options.Password.RequireNonAlphanumeric = false;
+	}).AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddLogging(loggingBuilder => loggingBuilder
+	.AddConsole()
+	.AddDebug().SetMinimumLevel(LogLevel.Information));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
