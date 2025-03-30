@@ -1,13 +1,11 @@
-﻿@page "/Login"
+﻿@page "/register"
 
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-@inject ILogger<Login> Logger
 
-<PageTitle>Login</PageTitle>
+<PageTitle>SignUp</PageTitle>
 
-
-@if (UserDetails is null)
+@if (RegisterDetails is null)
 {
     <p>
         <em>Loading...</em>
@@ -23,58 +21,55 @@ else
                          class="img-fluid" alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-5">
-                    <h3 style="color: #e50000">@_warningText</h3>
-                    <EditForm Model="@UserDetails" FormName="login" OnValidSubmit="HandleLoginAsync" Enhance>
+                    <EditForm Model="@RegisterDetails" FormName="login" OnValidSubmit="@HandleRegisterAsync" Enhance>
                         <DataAnnotationsValidator/>
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <InputText
-                                @bind-Value="@UserDetails.Email"
+                                @bind-Value="@RegisterDetails.Email"
                                 id="form3Example3"
                                 class="form-control form-control-lg"
                                 placeholder="Enter a valid email address">
                             </InputText>
                             <label class="form-label" for="form3Example3">Email address</label>
-                            <ValidationMessage For=" () => UserDetails.Email"/>
+                            <ValidationMessage For=" () => RegisterDetails.Email"/>
                         </div>
 
                         <!-- Password input -->
                         <div data-mdb-input-init class="form-outline mb-3">
                             <InputText
-                                @bind-Value="@UserDetails.Password"
+                                @bind-Value="@RegisterDetails.Password"
                                 type="password"
                                 id="form3Example4"
                                 class="form-control form-control-lg"
                                 placeholder="Enter password">
                             </InputText>
                             <label class="form-label" for="form3Example4">Password</label>
-                            <ValidationMessage For=" () => UserDetails.Password"/>
+                            <ValidationMessage For=" () => RegisterDetails.Password"/>
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <!-- Checkbox -->
-                            <div class="form-check mb-0">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3"/>
-                                <label class="form-check-label" for="form2Example3">
-                                    Remember me
-                                </label>
-                            </div>
-                            <a href="#!" class="text-body">Forgot password?</a>
+                        @*Confirm Password input*@
+                        <div data-mdb-input-init class="form-outline mb-3">
+                            <InputText
+                                @bind-Value="@RegisterDetails.ConfirmPassword"
+                                type="password"
+                                id="form3Example4"
+                                class="form-control form-control-lg"
+                                placeholder="Enter password">
+                            </InputText>
+                            <label class="form-label" for="form3Example4">Repeat Password</label>
+                            <ValidationMessage For=" () => RegisterDetails.ConfirmPassword"/>
                         </div>
+
 
                         <div class="text-center text-lg-start mt-4 pt-2">
                             <button type="submit"
+                                    data-mdb-button-init
+                                    data-mdb-ripple-init
                                     class="btn btn-primary btn-lg"
                                     style="padding-left: 2.5rem; padding-right: 2.5rem;">
-                                Login
+                                Register
                             </button>
-                            <p class="small fw-bold mt-2 pt-1 mb-0">
-                                Don't have an account?
-                                <a href="/register"
-                                   class="link-danger">
-                                    Register
-                                </a>
-                            </p>
                         </div>
 
                     </EditForm>
@@ -84,25 +79,24 @@ else
     </section>
 }
 
+
 @code {
 
-    [SupplyParameterFromForm] private UserDetails? UserDetails { get; set; }
-    string _warningText = "";
+    [SupplyParameterFromForm] private RegisterDetails? RegisterDetails { get; set; }
 
     protected override void OnParametersSet()
     {
-        UserDetails = new UserDetails()
+        RegisterDetails = new RegisterDetails()
         {
             Email = "",
-            Password = ""
+            Password = "",
+            ConfirmPassword = ""
         };
     }
 
-    private async Task HandleLoginAsync()
+    private async Task HandleRegisterAsync()
     {
-        ArgumentNullException.ThrowIfNull(UserDetails);
-
-        // TODO - Implement login logic
+       // TODO: Implement Register logic
     }
 
 }
